@@ -1,0 +1,60 @@
+<div class="task-list-container">
+  <div class="task-stats">
+    <h2>Tasks ({{ taskService.totalCount() }})</h2>
+    <p>Completed: {{ taskService.completedCount() }} / {{ taskService.totalCount() }}</p>
+  </div>
+  
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Search tasks..."
+        [value]="searchTerm"
+        (input)="onSearchChange($event)"
+        class="search-input" />
+    </div>
+    
+    <div class="filter-controls">
+      <label class="checkbox-label">
+        <input 
+          type="checkbox" 
+          [checked]="showCompleted"
+          (change)="onShowCompletedChange($event)" />
+        Show completed
+      </label>
+      
+      <select 
+        [value]="selectedPriority || ''"
+        (change)="onPriorityFilterChange($event)"
+        class="priority-filter">
+        <option value="">All priorities</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="task-list">
+    <div *ngIf="taskService.filteredTasks().length > 0; else emptyState">
+      <app-task-item
+        *ngFor="let task of taskService.filteredTasks(); trackBy: trackByTaskId"
+        [task]="task"
+        (toggleComplete)="onToggleComplete($event)"
+        (editTask)="onEditTask($event)"
+        (deleteTask)="onDeleteTask($event)">
+      </app-task-item>
+    </div>
+    
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <p *ngIf="taskService.totalCount() === 0; else noMatches">
+          No tasks yet. Add your first task!
+        </p>
+        <ng-template #noMatches>
+          <p>No tasks match your current filters.</p>
+        </ng-template>
+      </div>
+    </ng-template>
+  </div>
+</div>

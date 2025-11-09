@@ -1,0 +1,43 @@
+<div class="task-item" [class.completed]="task.completed">
+  <div class="task-content">
+    <div class="task-header">
+      <h3>{{ task.title }}</h3>
+      <span class="priority" [class]="'priority-' + task.priority">
+        {{ task.priority }}
+      </span>
+    </div>
+    
+    <p class="description" *ngIf="task.description">{{ task.description }}</p>
+    
+    <div class="due-date" *ngIf="task.dueDate" [class.overdue]="isOverdue()">
+      Due: {{ task.dueDate | date:'short' }}
+    </div>
+    
+    <div class="task-meta">
+      <small>Created: {{ task.createdAt | date:'short' }}</small>
+    </div>
+  </div>
+  
+  <div class="task-actions">
+    <button 
+      (click)="onToggleComplete()"
+      [class.completed]="task.completed"
+      class="toggle-btn">
+      {{ task.completed ? 'Done' : 'Todo' }}
+    </button>
+    
+    <button 
+      (click)="onEdit()"
+      class="edit-btn"
+      title="Edit task">
+      Edit
+    </button>
+    
+    <button 
+      (click)="onDelete()"
+      class="delete-btn"
+      title="Delete task">
+      Delete
+    </button>
+  </div>
+</div>

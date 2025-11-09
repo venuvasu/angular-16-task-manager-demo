@@ -1,0 +1,78 @@
+<div class="add-task-container">
+  <h3>Add New Task</h3>
+  
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input 
+        id="title"
+        type="text" 
+        formControlName="title"
+        placeholder="Enter task title"
+        class="form-control"
+        [class.error]="isFieldInvalid('title')" />
+      
+      <div class="error-message" *ngIf="isFieldInvalid('title')">
+        <div *ngIf="taskForm.get('title')?.errors?.['required']">
+          Title is required
+        </div>
+        <div *ngIf="taskForm.get('title')?.errors?.['minlength']">
+          Title must be at least 3 characters
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea 
+        id="description"
+        formControlName="description"
+        placeholder="Enter task description (optional)"
+        class="form-control"
+        rows="3"></textarea>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select 
+          id="priority"
+          formControlName="priority"
+          class="form-control">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input 
+          id="dueDate"
+          type="datetime-local"
+          formControlName="dueDate"
+          class="form-control" />
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        [disabled]="taskForm.invalid || isSubmitting"
+        class="btn btn-primary">
+        {{ isSubmitting ? 'Adding...' : 'Add Task' }}
+      </button>
+      
+      <button 
+        type="button" 
+        (click)="onReset()"
+        class="btn btn-secondary">
+        Reset
+      </button>
+    </div>
+  </form>
+  
+  <div class="success-message" *ngIf="showSuccessMessage">
+    Task added successfully!
+  </div>
+</div>
